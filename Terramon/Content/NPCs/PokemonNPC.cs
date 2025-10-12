@@ -1,5 +1,3 @@
-using System.Reflection;
-using Newtonsoft.Json.Linq;
 using ReLogic.Content;
 using Terramon.Content.Commands;
 using Terramon.Content.Configs;
@@ -11,7 +9,6 @@ using Terramon.Content.Projectiles;
 using Terramon.Core.Abstractions;
 using Terramon.Core.Battling;
 using Terramon.Core.Loaders;
-using Terramon.Core.NPCComponents;
 using Terramon.Helpers;
 using Terramon.ID;
 using Terraria.Audio;
@@ -24,7 +21,7 @@ using Terraria.UI.Chat;
 namespace Terramon.Content.NPCs;
 
 [Autoload(false)]
-public class PokemonNPC(ushort id, DatabaseV2.PokemonSchema schema) : ModNPC, IPokemonEntity
+public sealed class PokemonNPC(ushort id, DatabaseV2.PokemonSchema schema) : ModNPC, IPokemonEntity
 {
     /// <summary>
     ///     The index of the Pokémon NPC under the mouse cursor.
@@ -108,24 +105,7 @@ public class PokemonNPC(ushort id, DatabaseV2.PokemonSchema schema) : ModNPC, IP
 
         // Start a stopwatch to measure the time it takes to apply all components.
         // var stopwatch = Stopwatch.StartNew();
-
-        foreach (var component in PokemonEntityLoader.NPCSchemaCache[ID].Children<JProperty>())
-        {
-            var componentType = Mod.Code.GetType($"Terramon.Content.NPCs.NPC{component.Name}");
-            if (componentType == null)
-                // Remove the component from the schema if it doesn't exist.
-                // _schemaCache[ID].First(x => x.Path == component.Path).Remove();
-                continue;
-            var enableComponentRef = NPCComponentExtensions.EnableComponentMethod.MakeGenericMethod(componentType);
-            var instancedComponent = enableComponentRef.Invoke(null, [NPC, null]);
-            foreach (var prop in component.Value.Children<JProperty>())
-            {
-                var fieldInfo = componentType.GetRuntimeField(prop.Name);
-                if (fieldInfo == null) continue;
-                fieldInfo.SetValue(instancedComponent, prop.Value.ToObject(fieldInfo.FieldType));
-            }
-        }
-
+        PokemonEntityLoader.NPCSchemaCache[ID]?.Invoke(NPC);
         // Stop the stopwatch and log the time taken to apply all components.
         // stopwatch.Stop();
         // Mod.Logger.Debug("Time taken to apply components: " + stopwatch.Elapsed + "ms");

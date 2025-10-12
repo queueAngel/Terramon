@@ -9,7 +9,12 @@ public abstract class NPCComponent : GlobalNPC
 {
     private protected static Dictionary<int, NPCComponent> Instances;
 
-    public bool Enabled { get; private set; }
+    private bool _enabled;
+    public bool Enabled
+    {
+        get => _enabled;
+        set => _enabled = value;
+    }
 
     public override bool InstancePerEntity => true;
 

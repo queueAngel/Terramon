@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json.Linq;
@@ -83,6 +84,7 @@ public class PokemonPet(ushort id, DatabaseV2.PokemonSchema schema) : ModProject
 
     public override void SetDefaults()
     {
+        // Stopwatch s = Stopwatch.StartNew();
         foreach (var component in PokemonEntityLoader.PetSchemaCache[ID].Children<JProperty>())
         {
             var componentType = Mod.Code.GetType($"Terramon.Content.Projectiles.Projectile{component.Name}");
@@ -100,6 +102,10 @@ public class PokemonPet(ushort id, DatabaseV2.PokemonSchema schema) : ModProject
                 fieldInfo.SetValue(instancedComponent, prop.Value.ToObject(fieldInfo.FieldType));
             }
         }
+        /*
+        s.Stop();
+        Main.NewText(s.ElapsedTicks);
+        */
     }
 
     public override void OnSpawn(IEntitySource source)
