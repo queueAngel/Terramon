@@ -119,10 +119,10 @@ public sealed class PokemonNPC(ushort id, DatabaseV2.PokemonSchema schema) : Mod
             for (var i = 0; i < 4; i++)
             {
                 var angle = MathHelper.PiOver2 * i;
-                var x = (float)Math.Cos(angle);
-                var y = (float)Math.Sin(angle);
-                Dust.NewDust(new Vector2(NPC.position.X, NPC.position.Y), NPC.width, NPC.height, dust, x / 2, y / 2);
-                Dust.NewDust(new Vector2(NPC.position.X, NPC.position.Y), NPC.width, NPC.height, dust, x, y);
+                var x = MathF.Cos(angle);
+                var y = MathF.Sin(angle);
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, dust, x / 2, y / 2);
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, dust, x, y);
             }
 
             _cryTimer = 30;

@@ -193,7 +193,7 @@ public class PokemonEntityLoader : ModSystem
         var npc = new PokemonNPC(id, schema);
         Mod.AddContent(npc);
         IDToNPCType.Add(id, npc.NPC.type);
-        LoadPokemonNPC(id, schema, hjsonSchema, commonSchema);
+        LoadPokemonNPC(id, hjsonSchema, commonSchema);
 
         // Load Pokémon pet projectile
         if (hjsonSchema.TryGetValue("Projectile", out var petSchema))
@@ -215,14 +215,14 @@ public class PokemonEntityLoader : ModSystem
     }
     [UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_globals")]
     public static extern ref GlobalNPC[] GetGlobals(NPC instance);
-    private void LoadPokemonNPC(ushort id, DatabaseV2.PokemonSchema schema, JObject hjsonSchema, JToken commonSchema)
+    private void LoadPokemonNPC(ushort id, JObject hjsonSchema, JToken commonSchema)
     {
         if (hjsonSchema.Remove("NPC", out var npcSchema))
         {
             // Add common components to NPC schema
             IEnumerable<JProperty> thisComps = npcSchema.Children<JProperty>();
             if (commonSchema != null)
-                thisComps = thisComps.Concat(npcSchema.Children<JProperty>());
+                thisComps = thisComps.Concat(commonSchema.Children<JProperty>());
 
             // var globals = typeof(NPC).GetField("_globals", BindingFlags.Instance | BindingFlags.NonPublic);
 
