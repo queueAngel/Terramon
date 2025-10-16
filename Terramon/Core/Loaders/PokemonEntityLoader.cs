@@ -93,9 +93,10 @@ public class PokemonEntityLoader : ModSystem
             var c = dynamic.GetILGenerator();
 
             c.Emit(OpCodes.Ldarg_0); // load the NPC
+            c.Emit(OpCodes.Ldfld, globalsField); // load the globals array
 
             for (var i = 0; i < everything.Count - 1; i++)
-                c.Emit(OpCodes.Dup); // get it a couple extra times
+                c.Emit(OpCodes.Dup); // get the array a couple extra times
             foreach ((var componentType, var componentActions) in everything)
             {
                 int compIndex = Array.FindIndex(globals, g => g.GetType() == componentType);
@@ -105,7 +106,6 @@ public class PokemonEntityLoader : ModSystem
                     continue;
                 }
 
-                c.Emit(OpCodes.Ldfld, globalsField); // load the globals array
                 c.Emit(OpCodes.Ldc_I4, compIndex); // load the index of the component in the array
                 c.Emit(OpCodes.Ldelem_Ref); // load the component from the array
 
