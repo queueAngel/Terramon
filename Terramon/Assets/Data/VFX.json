@@ -1,0 +1,26 @@
+{
+	"particles": {
+		"Cut":
+		{
+			"properties": {
+				"pixelated": true,
+				"fadeIn": 10,
+				"fadeOut": 10
+			},
+			"movement": {
+				"style": "TracePath",
+				"shape": "Circle",
+				"start": 0.33,
+				"end": 0.66
+			},
+			"trail": {
+				"style": "Mesh",
+				"length": 8,
+				"size": 8,
+				"color": "White",
+				"taper": "Both",
+				"taperFunction": "Linear"
+			}
+		}
+	}
+}
