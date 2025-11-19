@@ -11,6 +11,7 @@ using Terramon.Content.Packets;
 using Terramon.Content.Projectiles;
 using Terramon.Content.Tiles.Banners;
 using Terramon.Content.Tiles.Interactive;
+using Terramon.Content.Visuals;
 using Terramon.Core.Battling;
 using Terramon.Core.Loaders;
 using Terramon.Core.Loaders.UILoading;
@@ -175,6 +176,11 @@ public class TerramonPlayer : ModPlayer
     public override void ProcessTriggers(TriggersSet triggersSet)
     {
         ProcessActiveMonTriggers();
+
+        if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.F) && !Main.oldKeyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.F))
+        {
+            VisualsLoader.EmittersByID[0].Emit(Player.position, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * 4f);
+        }
 
         if (HasChosenStarter && KeybindSystem.HubKeybind.JustPressed)
             HubUI.ToggleActive();

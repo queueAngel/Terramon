@@ -1,6 +1,7 @@
 using EasyPacketsLib;
 using Terramon.Content.GUI;
 using Terramon.Content.Menus;
+using Terramon.Content.Visuals;
 using Terramon.Core.Loaders;
 using Terramon.Core.Loaders.UILoading;
 
@@ -167,6 +168,9 @@ public class Terramon : Mod
 
         // Don't run the rest of the method on servers
         if (Main.dedServ) return;
+
+        // Initialize visuals
+        AddContent<VisualsLoader>();
 
         // Check how many times the mod has been loaded
         TimesLoaded = CheckLoadCount();

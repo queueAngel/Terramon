@@ -6,12 +6,12 @@ namespace Terramon.Content.Visuals;
 [Autoload(false)]
 public sealed class VisualsLoader : ModSystem
 {
-    public Dictionary<string, ParticleEmitter> EmittersByName = [];
-    public ParticleEmitter[] EmittersByID;
+    public static Dictionary<string, ParticleEmitter> EmittersByName = [];
+    public static ParticleEmitter[] EmittersByID;
     public override void Load()
     {
         // Load effect schemas from file
-        var jsonStream = Mod.GetFileStream($"Assets/Data/VFX.json");
+        using var jsonStream = Mod.GetFileStream($"Assets/Data/VFX.json");
 
         var json = JsonDocument.Parse(jsonStream);
 
@@ -46,6 +46,43 @@ public sealed class VisualsLoader : ModSystem
             EmittersByName.Add(name, emitter);
         }
         EmittersByID = emitters.ToArray();
+
+        On_Main.DrawCachedProjs += static (orig, self, projCache, startSpriteBatch) =>
+        {
+            orig(self, projCache, startSpriteBatch);
+
+            if (projCache != Main.instance.DrawCacheProjsOverPlayers)
+                return;
+
+            if (!startSpriteBatch)
+                Main.spriteBatch.End();
+
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp,
+                DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+            DrawParticles(Main.spriteBatch);
+
+            Main.spriteBatch.End();
+
+            if (!startSpriteBatch)
+                Main.spriteBatch.Begin(default, default, SamplerState.PointClamp, default, RasterizerState.CullNone, default, Main.GameViewMatrix.TransformationMatrix);
+        };
+    }
+    public override void PreUpdateDusts()
+    {
+        for (int i = 0; i < EmittersByID.Length; i++)
+        {
+            var emitter = EmittersByID[i];
+            emitter.UpdateParticles();
+        }
+    }
+    public static void DrawParticles(SpriteBatch sb)
+    {
+        for (int i = 0; i < EmittersByID.Length; i++)
+        {
+            var emitter = EmittersByID[i];
+            emitter.DrawParticles(sb);
+        }
     }
     public override void Unload()
     {
