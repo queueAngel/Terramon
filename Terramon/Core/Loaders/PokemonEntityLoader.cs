@@ -145,6 +145,8 @@ public class PokemonEntityLoader : ModSystem
     {
         var pathBuilder = new StringBuilder(entity.Texture);
         var data = entity.Data;
+        if (data != null && data.Form != Form.None)
+            pathBuilder.Append('_').Append(data.Form);
         var i = entity.ID - 1;
         if (HasGenderDifference[i])
             if ((data != null ? data.Gender == Gender.Female ? 1 : 0 : 0) != 0)

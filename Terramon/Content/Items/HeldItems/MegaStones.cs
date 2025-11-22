@@ -18,12 +18,15 @@ public sealed class MegaStone(MegaStoneID id, ushort evolves) : HeldItem
     private static Palette[] Palettes { get; set; }
     
     private LocalizedText _pokeName;
+
+    public MegaStoneID ID = id;
+    public ushort Evolves = evolves;
     
     protected override bool CloneNewInstances => true;
-    public override string Name => $"{id}MegaStone";
+    public override string Name => $"{ID}MegaStone";
     protected override int UseRarity => ModContent.RarityType<MegaRarity>();
     public override string Texture => "Terramon/Assets/Items/HeldItems/MegaStone";
-    public override LocalizedText DisplayName => Mod.GetLocalization($"MegaStoneNames.{id}", id.ToString);
+    public override LocalizedText DisplayName => Mod.GetLocalization($"MegaStoneNames.{ID}", ID.ToString);
     public override LocalizedText Tooltip =>
         Mod.GetLocalization("CommonTooltips.MegaStoneTip").WithFormatArgs(_pokeName);
 
@@ -32,7 +35,7 @@ public sealed class MegaStone(MegaStoneID id, ushort evolves) : HeldItem
         base.SetStaticDefaults();
         TerramonItemAPI.Sets.HeldItem.Add(Type);
         TerramonItemAPI.Sets.Unobtainable.Add(Type);
-        _pokeName = Terramon.DatabaseV2.GetLocalizedPokemonName(evolves);
+        _pokeName = Terramon.DatabaseV2.GetLocalizedPokemonName(Evolves);
     }
     
     public override void SetDefaults()
@@ -79,7 +82,7 @@ public sealed class MegaStone(MegaStoneID id, ushort evolves) : HeldItem
         var shader = ShaderAssets.Palette.Value;
         var tex = TextureAssets.Item[Type].Value;
 
-        ref var palette = ref Palettes[(int)id];
+        ref var palette = ref Palettes[(int)ID];
 
         var main = palette.Main;
 

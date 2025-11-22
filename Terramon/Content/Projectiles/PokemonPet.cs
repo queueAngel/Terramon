@@ -1,9 +1,10 @@
-using System.Reflection;
 using Newtonsoft.Json.Linq;
 using ReLogic.Content;
+using System.Reflection;
 using Terramon.Content.Buffs;
 using Terramon.Content.Configs;
 using Terramon.Content.Dusts;
+using Terramon.Content.Items;
 using Terramon.Core.Abstractions;
 using Terramon.Core.Battling;
 using Terramon.Core.Loaders;
@@ -13,6 +14,7 @@ using Terramon.ID;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Drawing;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 
@@ -251,6 +253,20 @@ public sealed class PokemonPet(ushort id, DatabaseV2.PokemonSchema schema) : Mod
         var adjustedColor = ID == NationalDexID.Gastly
             ? GrayscaleColor(lightColor)
             : lightColor;
+
+        if (Data.Form is Form.Mega or Form.MegaX or Form.MegaY)
+        {
+            for (float i = 0f; i < 1f; i += 0.25f)
+            {
+                float radians = i * MathHelper.TwoPi + (float)Main.timeForVisualEffects * 0.1f;
+
+                Main.EntitySpriteDraw(_mainTexture.Value,
+                    drawPos + new Vector2(0f, 5f).RotatedBy(radians),
+                    sourceRect, RarityLoader.GetRarity(ModContent.RarityType<MegaRarity>()).RarityColor with { A = 64 },
+                    Projectile.rotation,
+                    origin, Projectile.scale, effects);
+            }
+        }
 
         Main.EntitySpriteDraw(_mainTexture.Value,
             drawPos,
@@ -742,5 +758,52 @@ public sealed class PokemonPet(ushort id, DatabaseV2.PokemonSchema schema) : Mod
         }
 
         _shinySparkleTimer = 0;
+    }
+
+    public void ToggleMegaEvolution()
+    {
+        if (!TryMegaEvolve())
+        {
+            Data.Form = Form.None;
+            _mainTexture = PokemonEntityLoader.RequestTexture(this);
+            var hb = Projectile.Hitbox;
+            hb.Inflate(6, 6);
+            for (int i = 0; i < 64; i++)
+            {
+                Gore.NewGoreDirect(Projectile.GetSource_FromThis(), Main.rand.NextVector2FromRectangle(hb) - new Vector2(16f), Vector2.Zero, Main.rand.Next(61, 64));
+            }
+        }
+    }
+
+    private bool TryMegaEvolve()
+    {
+        if (Data.Form != Form.None)
+            return false;
+
+        if (Data.HeldItem.ModItem is not MegaStone stone)
+            return false;
+
+        if (stone.Evolves != ID)
+            return false;
+
+        Data.Form = stone.ID.ToString()[^1] switch
+        {
+            'X' => Form.MegaX,
+            'Y' => Form.MegaY,
+            _ => Form.Mega,
+        };
+
+        _mainTexture = PokemonEntityLoader.RequestTexture(this);
+
+        MegaBurst();
+
+        return true;
+    }
+
+    private void MegaBurst()
+    {
+        ParticleOrchestrator.RequestParticleSpawn(true, ParticleOrchestraType.ShimmerTownNPC, new() { PositionInWorld = Projectile.Center + new Vector2(32f, 0f) });
+        ParticleOrchestrator.RequestParticleSpawn(true, ParticleOrchestraType.ShimmerTownNPC, new() { PositionInWorld = Projectile.Center });
+        ParticleOrchestrator.RequestParticleSpawn(true, ParticleOrchestraType.ShimmerTownNPC, new() { PositionInWorld = Projectile.Center - new Vector2(32f, 0f) });
     }
 }

@@ -12,6 +12,19 @@ using Terraria.Utilities;
 
 namespace Terramon.Core;
 
+public enum Form : byte
+{
+    None,
+    Mega,
+    MegaX,
+    MegaY,
+    GMax,
+    Alola,
+    Galar,
+    Hisui,
+    Paldea,
+}
+
 public class PokemonData
 {
     private const ushort Version = 0;
@@ -40,6 +53,7 @@ public class PokemonData
     public bool Participated;
     public StatStages StatStages;
     public NonVolatileStatus Status;
+    public Form Form;
     public string Variant;
 
     public ushort ID
