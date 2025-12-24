@@ -790,6 +790,7 @@ public sealed class PokemonPet(ushort id, DatabaseV2.PokemonSchema schema) : Mod
         {
             'X' => Form.MegaX,
             'Y' => Form.MegaY,
+            'Z' => Form.MegaZ,
             _ => Form.Mega,
         };
 

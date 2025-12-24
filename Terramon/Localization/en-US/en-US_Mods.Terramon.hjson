@@ -723,6 +723,11 @@ Items: {
 			It's a strange, stretchy charm that encourages growth
 			'''
 	}
+
+	KeyStone: {
+		DisplayName: Key Stone
+		Tooltip: ""
+	}
 }
 
 MegaStoneNames: {
@@ -747,6 +752,77 @@ MegaStoneNames: {
 	Dragonite: Dragoninite
 	MewtwoX: Mewtwonite X
 	MewtwoY: Mewtwonite Y
+	Gardevoir: Gardevoirite
+	Ampharos: Ampharosite
+	Blaziken: Blazikenite
+	Medicham: Medichamite
+	Houndoom: Houndoominite
+	Aggron: Aggronite
+	Banette: Banettite
+	Tyranitar: Tyranitarite
+	Scizor: Scizorite
+	Lucario: Lucarionite
+	Abomasnow: Abomasite
+	Absol: Absolite
+	Heracross: Heracronite
+	Mawile: Mawilite
+	Manectric: Manectite
+	Garchomp: Garchompite
+	Latias: Latiasite
+	Latios: Latiosite
+	Swampert: Swampertite
+	Sceptile: Sceptilite
+	Sableye: Sablenite
+	Altaria: Altarianite
+	Gallade: Galladite
+	Audino: Audinite
+	Metagross: Metagrossite
+	Sharpedo: Sharpedonite
+	Steelix: Steelixite
+	Glalie: Glalitite
+	Diancie: Diancite
+	Camerupt: Cameruptite
+	Lopunny: Lopunnite
+	Salamence: Salamencite
+	Meganium: Meganiumite
+	Feraligatr: Feraligite
+	Skarmory: Skarmorite
+	Froslass: Froslassite
+	Heatran: Heatranite
+	Darkrai: Darkrainite
+	Emboar: Emboarite
+	Excadrill: Excadrite
+	Scolipede: Scolipite
+	Scrafty: Scraftinite
+	Eelektross: Eelektrossite
+	Chandelure: Chandelurite
+	Chesnaught: Chesnaughtite
+	Delphox: Delphoxite
+	Greninja: Greninjite
+	Pyroar: Pyroarite
+	Floette: Floettite
+	Malamar: Malamarite
+	Barbaracle: Barbaracite
+	Dragalge: Dragalgite
+	Hawlucha: Hawluchanite
+	Zygarde: Zygardite
+	Drampa: Drampanite
+	Zeraora: Zeraorite
+	Falinks: Falinksite
+	Chimecho: Chimechite
+	AbsolZ: Absolite Z
+	Staraptor: Staraptite
+	GarchompZ: Garchompite Z
+	LucarioZ: Lucarionite Z
+	Golurk: Golurkite
+	Meowstic: Meowsticite
+	Crabominable: Crabominite
+	Golisopod: Golisopite
+	Magearna: Magearnite
+	Scovillain: Scovillainite
+	Baxcalibur: Baxcalibrite
+	Tatsugiri: Tatsugirinite
+	Glimmora: Glimmoranite
 }
 
 Keybinds: {

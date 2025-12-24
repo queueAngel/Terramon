@@ -160,9 +160,9 @@ public sealed class MegaStone(MegaStoneID id, ushort evolves) : HeldItem
             _rt = new RenderTarget2D(Main.graphics.GraphicsDevice, 22, 22));
 
         // Load mega stones
-        for (var start = MegaStoneID.Gengar; start <= MegaStoneID.Baxcalibur; start++)
+        for (var start = MegaStoneID.Gengar; start <= MegaStoneID.Glimmora; start++)
         {
-            var startName = start.ToString().TrimEnd('X', 'Y');
+            var startName = start.ToString().TrimEnd('X', 'Y', 'Z');
             if (NationalDexID.Search.TryGetId(startName, out var id))
                 MegaStoneItemGroup.Add(new MegaStone(start, (ushort)id));
         }
@@ -186,6 +186,7 @@ public sealed class MegaRarity : DiscoRarity
 public enum MegaStoneID
 {
     Missingno,
+    // XY
     Gengar,
     Gardevoir,
     Ampharos,
@@ -216,6 +217,7 @@ public enum MegaStoneID
     Garchomp,
     Latias,
     Latios,
+    // ORAS
     Swampert,
     Sceptile,
     Sableye,
@@ -233,6 +235,7 @@ public enum MegaStoneID
     Lopunny,
     Salamence,
     Beedrill,
+    // ZA
     Clefable,
     Victreebel,
     Starmie,
@@ -241,6 +244,8 @@ public enum MegaStoneID
     Feraligatr,
     Skarmory,
     Froslass,
+    Heatran,
+    Darkrai,
     Emboar,
     Excadrill,
     Scolipede,
@@ -258,8 +263,22 @@ public enum MegaStoneID
     Hawlucha,
     Zygarde,
     Drampa,
+    Zeraora,
     Falinks,
     RaichuX,
     RaichuY,
+    Chimecho,
+    AbsolZ,
+    Staraptor,
+    GarchompZ,
+    LucarioZ,
+    Golurk,
+    Meowstic,
+    Crabominable,
+    Golisopod,
+    Magearna,
+    Scovillain,
     Baxcalibur,
+    Tastugiri,
+    Glimmora,
 }

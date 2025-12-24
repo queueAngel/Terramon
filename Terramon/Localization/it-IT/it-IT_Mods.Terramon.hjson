@@ -723,6 +723,11 @@ Items: {
 			It's a strange, stretchy charm that encourages growth
 			''' */
 	}
+
+	KeyStone: {
+		// DisplayName: Key Stone
+		// Tooltip: ""
+	}
 }
 
 MegaStoneNames: {
@@ -747,6 +752,75 @@ MegaStoneNames: {
 	// Dragonite: Dragoninite
 	// MewtwoX: Mewtwonite X
 	// MewtwoY: Mewtwonite Y
+	// Gardevoir: Gardevoir
+	// Ampharos: Ampharos
+	// Blaziken: Blaziken
+	// Medicham: Medicham
+	// Houndoom: Houndoom
+	// Aggron: Aggron
+	// Banette: Banette
+	// Tyranitar: Tyranitar
+	// Scizor: Scizor
+	// Lucario: Lucario
+	// Abomasnow: Abomasnow
+	// Absol: Absol
+	// Heracross: Heracross
+	// Mawile: Mawile
+	// Manectric: Manectric
+	// Garchomp: Garchomp
+	// Latias: Latias
+	// Latios: Latios
+	// Swampert: Swampert
+	// Sceptile: Sceptile
+	// Sableye: Sableye
+	// Altaria: Altaria
+	// Gallade: Gallade
+	// Audino: Audino
+	// Metagross: Metagross
+	// Sharpedo: Sharpedo
+	// Steelix: Steelix
+	// Glalie: Glalie
+	// Diancie: Diancie
+	// Camerupt: Camerupt
+	// Lopunny: Lopunny
+	// Salamence: Salamence
+	// Meganium: Meganium
+	// Feraligatr: Feraligatr
+	// Skarmory: Skarmory
+	// Froslass: Froslass
+	// Heatran: Heatran
+	// Darkrai: Darkrai
+	// Emboar: Emboar
+	// Excadrill: Excadrill
+	// Scolipede: Scolipede
+	// Scrafty: Scrafty
+	// Eelektross: Eelektross
+	// Chandelure: Chandelure
+	// Chesnaught: Chesnaught
+	// Delphox: Delphox
+	// Greninja: Greninja
+	// Pyroar: Pyroar
+	// Floette: Floette
+	// Malamar: Malamar
+	// Barbaracle: Barbaracle
+	// Dragalge: Dragalge
+	// Hawlucha: Hawlucha
+	// Zygarde: Zygarde
+	// Drampa: Drampa
+	// Zeraora: Zeraora
+	// Falinks: Falinks
+	// Chimecho: Chimecho
+	// AbsolZ: AbsolZ
+	// Staraptor: Staraptor
+	// GarchompZ: GarchompZ
+	// LucarioZ: LucarioZ
+	// Golurk: Golurk
+	// Meowstic: Meowstic
+	// Crabominable: Crabominable
+	// Golisopod: Golisopod
+	// Magearna: Magearna
+	// Scovillain: Scovillain
+	// Baxcalibur: Baxcalibur
 }
 
 Keybinds: {

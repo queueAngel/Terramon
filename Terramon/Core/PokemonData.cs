@@ -18,6 +18,7 @@ public enum Form : byte
     Mega,
     MegaX,
     MegaY,
+    MegaZ,
     GMax,
     Alola,
     Galar,
