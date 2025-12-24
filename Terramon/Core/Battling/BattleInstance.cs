@@ -129,6 +129,13 @@ public sealed class BattleInstance
         Stream.Write(final);
     }
 
+    public void SetHP(BattleClient plr, int pkmn, int targetHP)
+    {
+        var evalString = $">eval pokemon(\"p{(plr == ClientA ? 1 : 2)}\", \"{pkmn + 1}\").hp = {targetHP};";
+        Console.WriteLine(evalString);
+        Stream.Write(evalString);
+    }
+
     public void EnsureStreamStarted()
     {
         if (Stream != null)
@@ -177,11 +184,6 @@ public sealed class BattleInstance
             Console.WriteLine(start);
             Stream.Write(start);
             var mgr = BattleManager.Instance;
-
-            // I would love to write directly to a packet on multiplayer
-            // But IDK if that's possible with EasyPacketsLib
-            // I think that we can probably do some hack for it anyway
-            // Or come up with a better solution than EasyPacketsLib but I digress
 
             var inMainFrame = false;
 

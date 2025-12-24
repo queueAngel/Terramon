@@ -31,23 +31,13 @@ public sealed class BattleClient(IBattleProvider provider)
 
     public BattleSide Side => Battle is null ? null : Provider == Battle.A.Provider ? Battle[1] : Battle[2];
 
-    // These arent't used by remote clients
+    // These aren't used by remote clients
     public byte Pick;
     public bool TieRequest;
 
     // This is only used by the server
     public string CachedTeamSpec;
-
-    //public string Name => Provider.BattleName;
-    //public Entity Entity => Provider.SyncedEntity;
-    public bool BattleOngoing
-    {
-        get
-        {
-            return State == ClientBattleState.Ongoing;
-        }
-    }
-    //public bool IsLocal => Provider.IsLocal;
+    public bool BattleOngoing => State is ClientBattleState.Ongoing;
     public int SideIndex
     {
         get

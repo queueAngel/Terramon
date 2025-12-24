@@ -1,7 +1,8 @@
-﻿using Showdown.NET.Protocol;
+﻿using EasyPacketsLib;
+using Showdown.NET.Protocol;
+using System.IO;
 using System.Text;
 using System.Text.Json;
-using EasyPacketsLib;
 using Terramon.Content.Commands;
 using Terramon.Content.NPCs;
 using Terramon.Core.Battling.BattlePackets;
@@ -101,6 +102,11 @@ public sealed class BattleManager
 
                 // Reset client fields
                 BattleInstance.Destroy(inst);
+                break;
+            case SetHPMessage f:
+                // Get battle instance
+                inst = _activeBattles[f.Sender.ID];
+                inst.SetHP(f.Sender.BattleClient, f.Slot, f.TargetHP);
                 break;
         }
     }
@@ -287,32 +293,12 @@ public sealed class BattleManager
                 {
                     w.Write(pk);
                 }
-                Write(BattleActionID.SetPokemonHP, true);
-                {
-                    w.Write(pk);
-                    w.Write(new SimpleHP(sw.HP));
-                }
-                Write(BattleActionID.SetPokemonStatus);
-                {
-                    w.Write(pk);
-                    w.Write((byte)sw.Status);
-                }
                 break;
             case DragElement sw:
                 pk = new SimpleMon(sw.Pokemon);
                 Write(BattleActionID.SwitchPokemon);
                 {
                     w.Write(pk);
-                }
-                Write(BattleActionID.SetPokemonHP, true);
-                {
-                    w.Write(pk);
-                    w.Write(new SimpleHP(sw.HP));
-                }
-                Write(BattleActionID.SetPokemonStatus);
-                {
-                    w.Write(pk);
-                    w.Write((byte)sw.Status);
                 }
                 break;
             case DetailsChangeElement dc:
@@ -631,6 +617,7 @@ public sealed class BattleManager
             Console.WriteLine(spec);
             source.Stream.Write(spec);
             client.CachedTeamSpec = null;
+
             return;
         }
 

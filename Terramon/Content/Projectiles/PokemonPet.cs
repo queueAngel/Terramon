@@ -413,7 +413,8 @@ public sealed class PokemonPet(ushort id, DatabaseV2.PokemonSchema schema) : Mod
     public override void AI()
     {
         var owningPlayer = Main.player[Projectile.owner];
-        var activePokemon = owningPlayer.Terramon().GetActivePokemon();
+        var modPlayer = owningPlayer.Terramon();
+        var activePokemon = modPlayer.GetActivePokemon();
 
         var isShiny = Data is { IsShiny: true };
 
@@ -468,7 +469,7 @@ public sealed class PokemonPet(ushort id, DatabaseV2.PokemonSchema schema) : Mod
         // Health regen
         if (Data != null && Projectile.owner == Main.myPlayer)
         {
-            if (Data.HP < Data.RegenHP)
+            if (!modPlayer.BattleClient.BattleOngoing && Data.HP < Data.RegenHP)
             {
                 if (_regenStartTarget == 0)
                     _regenStartTarget = Main.rand.Next(6, 1021); // Between 1/10 of a second and 17 seconds

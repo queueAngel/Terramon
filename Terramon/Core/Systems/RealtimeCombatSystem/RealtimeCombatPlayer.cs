@@ -7,6 +7,11 @@ public class RealtimeCombatPlayer : ModPlayer
     public override void OnHurt(Player.HurtInfo info)
     {
         var terramonPlayer = Player.Terramon();
+
+        // Pet may not be hit during a battle
+        if (terramonPlayer.BattleClient.BattleOngoing)
+            return;
+
         var activePet = terramonPlayer.ActivePetProjectile;
 
         if (activePet == null)

@@ -1,6 +1,7 @@
 ﻿using Showdown.NET.Definitions;
 using Terramon.Content.NPCs;
 using Terramon.Core.Battling.BattlePackets;
+using Terramon.Core.Battling.BattlePackets.Messages;
 using Terramon.ID;
 
 namespace Terramon.Core.Battling;
@@ -194,7 +195,25 @@ public struct BattlePokemon()
     public void SetAsActive()
     {
         Side.SetActivePokemon(Slot);
-        Participated = true;
+        if (!Participated)
+        {
+            FirstTimeSwitchIn();
+            Participated = true;
+            Data?.Participated = true;
+        }
+    }
+    public readonly void FirstTimeSwitchIn()
+    {
+        if (Data is null)
+            return;
+        if (Data.HP != Data.MaxHP)
+        {
+            var setHP = new SetHPMessage(Slot, Data.HP)
+            {
+                Sender = Side.Provider
+            };
+            setHP.Send();
+        }
     }
     public void Faint()
     {
