@@ -4,16 +4,16 @@ namespace Terramon.Core.Battling;
 public sealed class BattleSide : IEnumerable<PokemonData>
 {
     public BattleSide Opposite;
-    private byte _activeSlot;
+    public byte ActiveSlot;
     public int TeamCount;
     public BattlePokemon[] Team = new BattlePokemon[6];
     public IBattleProvider Provider;
     public SideCondition Condition;
     public int Trapped;
-    public ref BattlePokemon ActivePokemon => ref Team[_activeSlot];
+    public ref BattlePokemon ActivePokemon => ref Team[ActiveSlot];
     public void SetActivePokemon(byte slot)
     {
-        _activeSlot = slot;
+        ActiveSlot = slot;
         Provider.SetActiveSlot(slot);
     }
     public void AdvanceTurn()

@@ -1,4 +1,5 @@
 ﻿using Showdown.NET.Definitions;
+using System.Runtime.CompilerServices;
 using Terramon.ID;
 
 namespace Terramon.Core.Battling.BattlePackets;
@@ -225,7 +226,8 @@ public readonly record struct SimplePackedPokemon
         var schema = Terramon.DatabaseV2.GetPokemon(Species);
         var nickname = Nickname ?? schema.Identifier;
         var speciesName = nickname == schema.Identifier ? null : schema.Identifier;
-        var heldItem = HasItem ? ItemID.Search.GetName(Item) : null;
+        ReadOnlySpan<char> heldItem = HasItem ? ItemID.Search.GetName(Item) : ReadOnlySpan<char>.Empty;
+        heldItem = heldItem.Slice(heldItem.IndexOf('/') + 1);
         var shiny = IsShiny ? "S" : null;
         string hiddenPowerType = null;
         string gmax = null;

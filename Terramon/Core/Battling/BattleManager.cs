@@ -103,11 +103,6 @@ public sealed class BattleManager
                 // Reset client fields
                 BattleInstance.Destroy(inst);
                 break;
-            case SetHPMessage f:
-                // Get battle instance
-                inst = _activeBattles[f.Sender.ID];
-                inst.SetHP(f.Sender.BattleClient, f.Slot, f.TargetHP);
-                break;
         }
     }
     
@@ -617,8 +612,16 @@ public sealed class BattleManager
             Console.WriteLine(spec);
             source.Stream.Write(spec);
             client.CachedTeamSpec = null;
-
             return;
+        }
+
+        // Check if HP needs to be synced
+        ref var poke = ref client.Side.ActivePokemon;
+        if (!poke.Synced)
+        {
+            poke.Synced = true;
+            if (poke.Data.HP != poke.Data.MaxHP)
+                source.SetHP(client, poke.Slot, poke.Data.HP);
         }
 
         var forceSwitch = root.TryGetProperty("forceSwitch", out _);

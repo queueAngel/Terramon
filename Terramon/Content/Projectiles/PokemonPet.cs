@@ -398,7 +398,7 @@ public sealed class PokemonPet(ushort id, DatabaseV2.PokemonSchema schema) : Mod
 
     public override void SendExtraAI(BinaryWriter writer)
     {
-        Data.NetWrite(writer, PokemonData.BitIsShiny | PokemonData.BitPersonalityValue | PokemonData.BitVariant);
+        Data.NetWrite(writer, PokemonData.BitIsShiny | PokemonData.BitPersonalityValue | PokemonData.BitVariant | PokemonData.BitHP);
         writer.Write(CustomSpriteDirection.HasValue);
         if (CustomSpriteDirection.HasValue) writer.Write(CustomSpriteDirection.Value);
     }
@@ -487,7 +487,7 @@ public sealed class PokemonPet(ushort id, DatabaseV2.PokemonSchema schema) : Mod
                 {
                     // Regen rate scales with MaxHP (20 is baseline), so more MaxHP = faster regen
                     var regenScale = 20f / Data.MaxHP;
-                    var regenIncrement = Math.Abs(owningPlayer.velocity.X) == 0 ? 1.25f : 0.5f;
+                    var regenIncrement = owningPlayer.velocity.X == 0 ? 1.25f : 0.5f;
                     _regenTimer += regenIncrement / regenScale;
 
                     if (_regenTimer >= 30f)

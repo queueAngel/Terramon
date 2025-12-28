@@ -131,7 +131,7 @@ public sealed class BattleInstance
 
     public void SetHP(BattleClient plr, int pkmn, int targetHP)
     {
-        var evalString = $">eval pokemon(\"p{(plr == ClientA ? 1 : 2)}\", \"{pkmn + 1}\").hp = {targetHP};";
+        var evalString = $">eval battle.sides[{(plr == ClientA ? 0 : 1)}].pokemon.find(p=>p.name==='{pkmn + 1}').hp={targetHP};";
         Console.WriteLine(evalString);
         Stream.Write(evalString);
     }

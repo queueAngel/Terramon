@@ -24,6 +24,7 @@ public struct BattlePokemon()
     }
     public readonly BattleSide OppositeSide => Side.Opposite;
     public bool Participated;
+    public bool Synced;
     public PokemonData Data;
     public readonly string DisplayName => Data?.DisplayName ?? Terramon.DatabaseV2.GetPokemon(_species).Identifier;
     public readonly string OwnerName
@@ -197,22 +198,8 @@ public struct BattlePokemon()
         Side.SetActivePokemon(Slot);
         if (!Participated)
         {
-            FirstTimeSwitchIn();
             Participated = true;
             Data?.Participated = true;
-        }
-    }
-    public readonly void FirstTimeSwitchIn()
-    {
-        if (Data is null)
-            return;
-        if (Data.HP != Data.MaxHP)
-        {
-            var setHP = new SetHPMessage(Slot, Data.HP)
-            {
-                Sender = Side.Provider
-            };
-            setHP.Send();
         }
     }
     public void Faint()
