@@ -96,6 +96,14 @@ Commands: {
 		// ParseErrorBannerTier: Failed to parse tier argument as BannerTier
 		// Success: Successfully changed the banner tier for the held banner to {0}
 	}
+
+	Starter: {
+		// Description: Opens the starter selection menu (only usable if you haven't chosen a starter yet)
+		// Usage: /starter
+		// AlreadyChosen: You have already chosen your starter Pokémon!
+	}
+
+	// Choose.Usage: /choose
 }
 
 Configs: {
@@ -126,6 +134,11 @@ Configs: {
 		ReducedAudio: {
 			Label: (Party-Seitenleiste) Reduzierter Ton
 			Tooltip: Deaktiviert musikalische Töne beim Neuordnen von Pokémon in der Seitenleiste
+		}
+
+		HighlightSelectedPokemonName: {
+			// Label: (Party Sidebar) Highlight Selected Pokémon Name
+			// Tooltip: Highlights the name of the currently selected Pokémon in the party sidebar
 		}
 
 		ReducedMotion: {
@@ -1037,4 +1050,7 @@ Misc: {
 		'''
 }
 
-// Projectiles.PokeBallBobber.DisplayName: Poke Ball Bobber
+Projectiles: {
+	// PokeBallBobber.DisplayName: Poké Ball Bobber
+	// PokemonPetGenericAttackProjectile.DisplayName: Pokémon Companion Generic Attack Projectile
+}

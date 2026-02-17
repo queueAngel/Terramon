@@ -91,6 +91,8 @@ public class TerramonPlayer : ModPlayer, IBattleProvider
             _activeSlot = value;
             if (value != -1)
                 _lastActiveSlot = _activeSlot;
+            else if (Party[_lastActiveSlot] == null)
+                _lastActiveSlot = 0;
 
             var buffType = ModContent.BuffType<PokemonCompanion>();
             var hasBuff = Player.HasBuff(buffType);
@@ -243,13 +245,7 @@ public class TerramonPlayer : ModPlayer, IBattleProvider
     
         if (KeybindSystem.TogglePokemonKeybind.JustPressed)
         {
-            if (_activeSlot != -1)
-            {
-                ActiveSlot = -1;
-                SoundEngine.PlaySound(in TerramonSoundID.PkballConsume);
-                return;
-            }
-            targetSlot = _lastActiveSlot;
+            targetSlot = _activeSlot != -1 ? _activeSlot : _lastActiveSlot;
         }
         else if (KeybindSystem.NextPokemonKeybind.JustPressed)
         {

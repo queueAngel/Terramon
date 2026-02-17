@@ -8,8 +8,8 @@
     }
     Visuals:
     {
-      LightColor: "1, 0.95, 0.8"
-      LightStrength: 0.5
+      TorchLightID: 0
+      LightStrength: 0.7
       DamperAmount: 0.5
       DustID: 6
       DustFrequency: 45
