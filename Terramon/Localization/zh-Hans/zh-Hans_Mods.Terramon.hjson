@@ -381,6 +381,7 @@ GUI: {
 		Height: 身高
 		Weight: 体重
 		Entry: 图鉴介绍
+		// TypeDisplay: "{0} {1}"
 	}
 
 	TurnBased: {
@@ -944,6 +945,7 @@ Tiles: {
 }
 
 Types: {
+	// None: Unknown
 	Normal: 一般
 	Fire: 火
 	Fighting: 格斗

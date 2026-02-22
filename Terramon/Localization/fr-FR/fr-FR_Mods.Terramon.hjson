@@ -381,6 +381,7 @@ GUI: {
 		Height: Taille
 		Weight: Poids
 		Entry: Entrée
+		// TypeDisplay: "{0} {1}"
 	}
 
 	TurnBased: {
@@ -944,6 +945,7 @@ Tiles: {
 }
 
 Types: {
+	// None: Unknown
 	// Normal: Normal
 	// Fire: Fire
 	// Fighting: Fighting
