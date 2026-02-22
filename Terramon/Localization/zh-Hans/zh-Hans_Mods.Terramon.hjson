@@ -382,6 +382,7 @@ GUI: {
 		Weight: 体重
 		Entry: 图鉴介绍
 		// TypeDisplay: "{0} {1}"
+		// Types: Terramon Type(s)
 	}
 
 	TurnBased: {

@@ -382,6 +382,7 @@ GUI: {
 		Weight: Gewicht
 		Entry: Eintrag
 		// TypeDisplay: "{0} {1}"
+		// Types: Terramon Type(s)
 	}
 
 	TurnBased: {
