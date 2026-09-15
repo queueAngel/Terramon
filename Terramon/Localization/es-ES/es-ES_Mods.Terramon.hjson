@@ -1053,3 +1053,8 @@ Projectiles: {
 	// PokeBallBobber.DisplayName: Poké Ball Bobber
 	// PokemonPetGenericAttackProjectile.DisplayName: Pokémon Companion Generic Attack Projectile
 }
+
+ConfigCategory: {
+	// ClientConfig.Description: ClientConfig
+	// GameplayConfig.Description: GameplayConfig
+}
