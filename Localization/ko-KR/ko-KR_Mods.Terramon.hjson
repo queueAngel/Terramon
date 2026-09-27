@@ -150,6 +150,15 @@ Configs: {
 				'''
 		}
 
+		NonPokemonSpawnRateMultiplier: {
+			// Label: Non-Pokémon Spawn Rate Multiplier
+			/* Tooltip:
+				'''
+				Multiplies the rate at which non-Pokémon NPCs spawn, including modded ones
+				[c/F2A754:If set to 0, regular Terraria enemies and other modded NPCs will not spawn at all]
+				''' */
+		}
+
 		SpawningStage: {
 			Label: 스폰 단계
 			Tooltip: 야생에서 나타날 수 있는 포켓몬의 단계 (높은 단계는 낮은 단계를 포함한다)
@@ -187,10 +196,26 @@ Configs: {
 
 	SpawningStage: {
 		Tooltip: ""
-		Basic.Label: 미진화 포켓몬/Basic Pokémon
-		Stage1.Label: 2진화 포켓몬/Stage 1 Pokémon
-		Stage2.Label: 3진화 포켓몬/Stage 2 Pokémon
-		Legendary.Label: 전설/환상의 포켓몬
+
+		Basic: {
+			Label: 미진화 포켓몬/Basic Pokémon
+			// Tooltip: ""
+		}
+
+		Stage1: {
+			Label: 2진화 포켓몬/Stage 1 Pokémon
+			// Tooltip: ""
+		}
+
+		Stage2: {
+			Label: 3진화 포켓몬/Stage 2 Pokémon
+			// Tooltip: ""
+		}
+
+		Legendary: {
+			Label: 전설/환상의 포켓몬
+			// Tooltip: ""
+		}
 	}
 }
 
@@ -213,7 +238,7 @@ GUI: {
 		SlotTooltipPCMode: "[c/FFFFFF:파티에 있음]"
 		SlotTooltipPCModeActive: "[c/FFFFFF:파티에 있음 (활성화)]"
 		CannotRemoveLastPokemon: 파티에는 최소한 한마리의 포켓몬이 있어야합니다!
-		}
+	}
 
 	PC.RenameLabel: 박스 이름 바꾸기
 

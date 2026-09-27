@@ -21,7 +21,7 @@ public readonly struct SyncPkballTileRpc(Item item, bool isOpen, bool isDisposab
 
     public void Serialise(BinaryWriter writer)
     {
-        _item.Serialize(writer, ItemSerializationContext.Syncing);
+        _item.Serialize(writer);
         writer.Write(_isOpen);
         writer.Write(_isDisposable);
         writer.Write(_player);
@@ -32,7 +32,7 @@ public readonly struct SyncPkballTileRpc(Item item, bool isOpen, bool isDisposab
     public SyncPkballTileRpc Deserialise(BinaryReader reader, in SenderInfo sender)
     {
         var i = new Item();
-        i.DeserializeFrom(reader, ItemSerializationContext.Syncing);
+        i.DeserializeFrom(reader);
         return new SyncPkballTileRpc(i, reader.ReadBoolean(), reader.ReadBoolean(), reader.ReadByte(),
             new Point16(reader.ReadInt16(), reader.ReadInt16()));
     }

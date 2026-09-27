@@ -95,23 +95,21 @@ public class TooltipOverlay : SmartUIState, ILoadable
             }
         };
 
-        On_Main.TryAllowingToCraftRecipe += (On_Main.orig_TryAllowingToCraftRecipe orig, Recipe recipe, bool crafting,
-            out bool allowCrafting) =>
+        On_Main.TryAllowingToCraftRecipe += static (orig, recipe, crafting,
+            out allowCrafting) =>
         {
             if (_heldPokemon != null) return allowCrafting = false;
 
             return orig(recipe, crafting, out allowCrafting);
         };
 
-        On_ItemSlot.LeftClick_refItem_int += (On_ItemSlot.orig_LeftClick_refItem_int orig, ref Item inv, int context) =>
+        On_ItemSlot.LeftClick += static (orig, inv, context, slot) =>
         {
             if (_heldPokemon == null)
-            {
-                orig(ref inv, context);
-            }
+                orig(inv, context, slot);
             else
             {
-                if (inv != Main.LocalPlayer.trashItem || !InventoryParty.InPCMode) return;
+                if (inv[slot] != Main.LocalPlayer.trashItem || !InventoryParty.InPCMode) return;
 
                 _hoveringTrash = true;
 
@@ -136,12 +134,6 @@ public class TooltipOverlay : SmartUIState, ILoadable
                         $"{(Main.keyState.IsKeyDown(Keys.LeftShift) || Main.keyState.IsKeyDown(Keys.RightShift) ? "Left" : "Shift")} click to release {_heldPokemon.DisplayName}",
                         _heldPokemon.IsShiny ? ModContent.RarityType<KeyItemRarity>() : ItemRarityID.White);
             }
-        };
-
-        On_ItemSlot.LeftClick_ItemArray_int_int += (orig, inv, context, slot)
-            =>
-        {
-            if (_heldPokemon == null) orig(inv, context, slot);
         };
     }
 

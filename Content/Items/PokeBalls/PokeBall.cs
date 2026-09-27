@@ -35,7 +35,7 @@ internal class PokeBallItem : BasePkballItem
     public override void AddRecipes()
     {
         CreateRecipe()
-            .AddRecipeGroup(RecipeGroupID.IronBar, 2)
+            .AddRecipeGroup(RecipeGroups.IronBar, 2)
             .AddIngredient<RedApricorn>(4)
             .AddTile(TileID.Anvils)
             .Register();

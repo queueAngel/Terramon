@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
 using ReLogic.OS;
@@ -8,6 +8,7 @@ using Terramon.Content.Items;
 using Terramon.Core.Loaders.UILoading;
 using Terramon.Core.Systems;
 using Terramon.Helpers;
+using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
@@ -64,7 +65,7 @@ public class PCInterface : SmartUIState
         On_Main.DoUpdate_Enter_ToggleChat += orig =>
         {
             if (_inRenameMode && Main.keyState.IsKeyDown(Keys.Enter) && !Main.keyState.IsKeyDown(Keys.LeftAlt) &&
-                !Main.keyState.IsKeyDown(Keys.RightAlt) && Main.hasFocus) // Submit the rename
+                !Main.keyState.IsKeyDown(Keys.RightAlt) && FocusHelper.AllowInputProcessing) // Submit the rename
             {
                 Main.chatRelease = false;
                 SoundEngine.PlaySound(SoundID.MenuClose);
@@ -91,7 +92,7 @@ public class PCInterface : SmartUIState
             orig();
         };
 
-        On_IngameFancyUI.OpenUIState += (orig, state) =>
+        On_IngameFancyUI.OpenUIState_UIState += (orig, state) =>
         {
             ExitRenameMode();
             orig(state);
@@ -108,7 +109,7 @@ public class PCInterface : SmartUIState
     public static bool Active => _pcService != null;
 
     public override bool Visible => TerramonPlayer.LocalPlayer.ActivePCTileEntityID != -1 &&
-                                    Main.LocalPlayer.chest == -1 && !Main.recBigList;
+                                    Main.LocalPlayer.chest == -1 && !Main.PipsUseGrid;
 
     public static int DisplayedBoxIndex { get; private set; }
 

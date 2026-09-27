@@ -1,7 +1,9 @@
+﻿using System.Collections.Generic;
 using System.Reflection;
 using Terramon.Content.Configs;
 using Terramon.Core.NPCComponents;
 using Terramon.ID;
+using Terraria;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Utilities;
 
@@ -24,7 +26,7 @@ public class NPCSpawnController : NPCComponent
     private const float ConstantSpawnMultiplier = 1.25f; // Seems to work well
 
     // See https://terrariamods.wiki.gg/wiki/Terramon_Mod/Pok%C3%A9mon#Spawning
-    private static readonly Dictionary<PokemonType, Func<NPCSpawnInfo, bool>> SimpleSpawnConditions = new()
+    private static readonly Dictionary<PokemonType, Func<NPC.Spawner, bool>> SimpleSpawnConditions = new()
     {
         {
             PokemonType.Normal, info => info.Player.ZoneForest // Forest
@@ -152,7 +154,7 @@ public class NPCSpawnController : NPCComponent
         Main.NewText($"spawnRate: {spawnRate}, maxSpawns: {maxSpawns}");
     }*/
 
-    public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
+    public override void EditSpawnPool(IDictionary<int, float> pool, NPC.Spawner spawner)
     {
         var gameplayConfig = ModContent.GetInstance<GameplayConfig>();
         var spawnRateMultiplier = gameplayConfig.PokemonSpawnRateMultiplier;
@@ -160,8 +162,8 @@ public class NPCSpawnController : NPCComponent
 
         // Check for some player buffs that affect spawn rates
         // TODO: Use reflection to access NPC.spawnRate instead
-        var hasWaterCandle = spawnInfo.Player.HasBuff(BuffID.WaterCandle);
-        var hasBattlePotion = spawnInfo.Player.HasBuff(BuffID.Battle);
+        var hasWaterCandle = spawner.Player.HasBuff(BuffID.WaterCandle);
+        var hasBattlePotion = spawner.Player.HasBuff(BuffID.Battle);
 
         var typesAdded = new HashSet<int>();
         foreach (var (type, component) in Instances)
@@ -172,7 +174,7 @@ public class NPCSpawnController : NPCComponent
 
             // Use simple Pokémon spawning system based on type for now
             // TODO: Implement a more complex system with unique spawn conditions for each Pokémon
-            if (SimpleEditSpawnPool(pool, type, spawnController, spawnInfo, hasWaterCandle, hasBattlePotion))
+            if (SimpleEditSpawnPool(pool, type, spawnController, spawner, hasWaterCandle, hasBattlePotion))
                 typesAdded.Add(type);
 
             /*if (!string.IsNullOrEmpty(spawnController.Condition) && spawnController.Chance > 0)
@@ -204,7 +206,7 @@ public class NPCSpawnController : NPCComponent
     }
 
     private static bool SimpleEditSpawnPool(IDictionary<int, float> pool, int type, NPCSpawnController spawnController,
-        NPCSpawnInfo spawnInfo, bool hasWaterCandle, bool hasBattlePotion)
+        NPC.Spawner spawnInfo, bool hasWaterCandle, bool hasBattlePotion)
     {
         const float chanceMultiplier = 7f / 32f; // 0.21875f
         var spawnChance = 0f;

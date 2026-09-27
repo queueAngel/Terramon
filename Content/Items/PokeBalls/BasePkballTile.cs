@@ -103,7 +103,7 @@ public abstract class BasePkballTile : ModTile
         {
             if (e.TryOpen() && !e.Item.IsAir)
             {
-                player.QuickSpawnItem(Entity.GetSource_None(), e.Item, e.Item.stack);
+                player.QuickSpawnItem(Entity.GetSource_None(), e.Item, default);
                 e.Item.TurnToAir();
             }
         }
@@ -119,7 +119,7 @@ public abstract class BasePkballTile : ModTile
     {
         if (TileUtils.TryGetTileEntityAs<BasePkballEntity>(i, j, out var e))
         {
-            if (!e.Item.IsAir) Main.LocalPlayer.QuickSpawnItem(Entity.GetSource_None(), e.Item, e.Item.stack);
+            if (!e.Item.IsAir) Main.LocalPlayer.QuickSpawnItem(Entity.GetSource_None(), e.Item, default);
 
             if (!e.Disposable || e.Item.IsAir)
                 yield return new Item(DropItem);
@@ -209,14 +209,14 @@ public class BasePkballEntity : ModTileEntity
 
     public override void NetSend(BinaryWriter writer)
     {
-        Item.Serialize(writer, ItemSerializationContext.Syncing);
+        Item.Serialize(writer);
         writer.Write(Open);
         writer.Write(Disposable);
     }
 
     public override void NetReceive(BinaryReader reader)
     {
-        Item.DeserializeFrom(reader, ItemSerializationContext.Syncing);
+        Item.DeserializeFrom(reader);
         Open = reader.ReadBoolean();
         Disposable = reader.ReadBoolean();
     }

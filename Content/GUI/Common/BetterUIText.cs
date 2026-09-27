@@ -1,3 +1,4 @@
+using System.Globalization;
 using Terraria.GameContent;
 using Terraria.Localization;
 using Terraria.UI;
@@ -139,7 +140,7 @@ public class BetterUIText : UIElement
         var baseColor = ShadowColor * (_color.A / 255f);
         var origin = new Vector2(0f, 0f) * vector;
         var baseScale = new Vector2(num);
-        var snippets = ChatManager.ParseMessage(useText, _color).ToArray();
+        var snippets = ChatManager.ParseMessage(useText, _color);
         ChatManager.ConvertNormalSnippets(snippets);
 
         foreach (var t in ShadowDirections)
@@ -163,7 +164,7 @@ public class BetterUIText : UIElement
         TextScale = textScale;
         _lastTextReference = _text.ToString();
         _visibleText = IsWrapped
-            ? dynamicSpriteFont.CreateWrappedText(_lastTextReference, GetInnerDimensions().Width / TextScale)
+            ? dynamicSpriteFont.CreateWrappedText(_lastTextReference, GetInnerDimensions().Width / TextScale, LanguageManager.Instance.ActiveCulture.CultureInfo)
             : _lastTextReference;
 
         // TML: Changed to use ChatManager.GetStringSize() since using DynamicSpriteFont.MeasureString() ignores chat tags,

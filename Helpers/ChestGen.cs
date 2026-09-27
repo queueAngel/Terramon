@@ -80,7 +80,7 @@ internal static class ChestGen
             if (!chestPredicate(chest))
                 continue;
 
-            for (var inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+            for (var inventoryIndex = 0; inventoryIndex < chest.maxItems; inventoryIndex++)
             {
                 // Skip chest if item already exists and duplicates are excluded
                 if (chest.item[inventoryIndex].type == itemID && excludeDuplicates)

@@ -81,7 +81,7 @@ public class PokemartClerk : ModNPC
         NPC.friendly = true; // NPC Will not attack player
         NPC.width = 18;
         NPC.height = 40;
-        NPC.aiStyle = 7;
+        NPC.aiStyle = NPCAIStyleID.Passive;
         NPC.damage = 20;
         NPC.defense = 15;
         NPC.lifeMax = 250;
@@ -95,15 +95,15 @@ public class PokemartClerk : ModNPC
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
     {
         // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-        bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
-        {
+        bestiaryEntry.Info.AddRange(
+        [
             // Sets the preferred biomes of this town NPC listed in the bestiary.
             // With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
             BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
 
             // Sets your NPC's flavor text in the bestiary.
             new FlavorTextBestiaryInfoElement("Mods.Terramon.NPCs.PokemartClerk.BestiaryText")
-        });
+        ]);
     }
 
     public override bool CanTownNPCSpawn(int numTownNPCs)
@@ -212,23 +212,17 @@ public class PokemartClerk : ModNPC
 
         return chat; // chat is implicitly cast to a string.
     }
-
-    public override void SetChatButtons(ref string button, ref string button2)
+    public sealed class EvolveButton : NPCInteraction
     {
-        // What the chat buttons are when you open up the chat UI
-        button = Language.GetTextValue("LegacyInterface.28");
+        public override bool Condition()
+        {
+            var activePokemonData = TerramonPlayer.LocalPlayer.GetActivePokemon();
+            return activePokemonData != null && activePokemonData.GetQueuedEvolution(EvolutionTrigger.LevelUp) != 0;
+        }
 
-        var player = Main.LocalPlayer.GetModPlayer<TerramonPlayer>();
-        var activePokemonData = player.GetActivePokemon();
-        if (activePokemonData != null && activePokemonData.GetQueuedEvolution(EvolutionTrigger.LevelUp) != 0)
-            button2 = Language.GetTextValue("Mods.Terramon.NPCs.PokemartClerk.EvolveButton",
-                activePokemonData.DisplayName);
-    }
-
-    public override void OnChatButtonClicked(bool firstButton, ref string shopName)
-    {
-        if (firstButton) shopName = "Shop";
-        else
+        public override string GetText()
+            => Terramon.Instance.GetLocalization("NPCs.PokemartClerk.EvolveButton").Format(TerramonPlayer.LocalPlayer.GetActivePokemon().DisplayName);
+        public override void Interact()
         {
             var player = Main.LocalPlayer.GetModPlayer<TerramonPlayer>();
             var activePokemonData = player.GetActivePokemon();
@@ -246,6 +240,12 @@ public class PokemartClerk : ModNPC
             Main.NewText(Language.GetTextValue("Mods.Terramon.Misc.PokedexRegistered", queuedEvolutionName),
                 new Color(159, 162, 173));
         }
+    }
+
+    public override void RegisterChatButtons(NPCInteractionList interactions)
+    {
+        interactions.InsertBefore(NPCInteractions.Shop(), NPCInteractionDatabase.CloseButton);
+        interactions.InsertBefore(new EvolveButton(), NPCInteractionDatabase.HappinessButton);
     }
 
     public override void AddShops()

@@ -33,7 +33,7 @@ public class PCItemRed : PCItem
     {
         CreateRecipe()
             .AddIngredient(ItemID.Chest, 2)
-            .AddRecipeGroup(RecipeGroupID.IronBar, 8)
+            .AddRecipeGroup(RecipeGroups.IronBar, 8)
             .AddIngredient(ItemID.Glass, 10)
             .AddIngredient<PokeBallItem>()
             .AddTile(TileID.WorkBenches)

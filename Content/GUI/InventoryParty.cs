@@ -1,4 +1,4 @@
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Terramon.Content.Commands;
 using Terramon.Content.Configs;
 using Terramon.Content.GUI.Common;
@@ -242,7 +242,7 @@ public class InventoryParty : SmartUIState
     {
         // Move Pokédex button in Journey Mode (to avoid overlap with the Power Menu toggle button)
         if (!ModLoader.HasMod("AutoTrash"))
-            switch (Main.GameModeInfo.IsJourneyMode)
+            switch (Main.IsJourneyMode)
             {
                 case true when _openPokedexButton.Left.Pixels != 76:
                     _openPokedexButton.Left.Set(76, 0f);
@@ -252,7 +252,7 @@ public class InventoryParty : SmartUIState
                     break;
             }
         else
-            switch (Main.GameModeInfo.IsJourneyMode)
+            switch (Main.IsJourneyMode)
             {
                 case true when _openPokedexButton.Top.Pixels != 312:
                     _openPokedexButton.Top.Set(312, 0f);

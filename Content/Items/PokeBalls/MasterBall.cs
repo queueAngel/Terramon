@@ -1,6 +1,9 @@
-﻿using Terramon.Content.NPCs;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terramon.Content.NPCs;
 using Terramon.Core.Loaders;
 using Terramon.Helpers;
+using Terraria;
 
 namespace Terramon.Content.Items.PokeBalls;
 
@@ -35,12 +38,11 @@ internal class MasterBallItem : BasePkballItem
         Item.ResearchUnlockCount = 1;
     }
 
-    public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale,
-        int whoAmI)
+    public override bool PreDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
     {
         Main.GetItemDrawFrame(Item.type, out var itemTexture, out var itemFrame);
         var drawOrigin = itemFrame.Size() / 2f;
-        var drawPosition = Item.Bottom - Main.screenPosition - new Vector2(0, drawOrigin.Y);
+        var drawPosition = item.Bottom - Main.screenPosition - new Vector2(0, drawOrigin.Y);
         spriteBatch.Draw(itemTexture, drawPosition, itemFrame, Color.White, rotation, drawOrigin, scale, SpriteEffects.None, 0);
         
         return false;

@@ -1,3 +1,4 @@
+﻿using Microsoft.Xna.Framework;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json.Linq;
@@ -8,6 +9,7 @@ using Terramon.Core.Abstractions;
 using Terramon.Core.Loaders;
 using Terramon.Core.ProjectileComponents;
 using Terramon.ID;
+using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
@@ -124,7 +126,7 @@ public class PokemonPet(ushort id, DatabaseV2.PokemonSchema schema) : ModProject
         _cachedID = ID;
     }
 
-    public override bool PreDraw(ref Color lightColor)
+    public override bool PreDraw(Player player, ref Color lightColor)/* tModPorter Replace 'Main.player[Projectile.owner]' with 'player'. */
     {
         _mainTexture ??= PokemonEntityLoader.RequestTexture(this);
 

@@ -37,9 +37,9 @@ internal class UILoader : ModSystem
         if (Main.dedServ)
             return;
         
-        On_Main.DoUpdateInWorld += static (orig, self, sw) =>
+        On_Main.DoUpdateInWorld += static (orig, self) =>
         {
-            orig(self, sw);
+            orig(self);
             UpdateUI_Custom(GameTime);
         };
         

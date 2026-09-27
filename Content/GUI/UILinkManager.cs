@@ -1,7 +1,8 @@
-using Terramon.Content.Configs;
+﻿using Terramon.Content.Configs;
 using Terramon.Content.GUI;
 using Terramon.Core.Systems.PokemonDirectUseSystem;
 using Terraria.GameInput;
+using Terraria.Initializers;
 using Terraria.Localization;
 using Terraria.UI.Gamepad;
 
@@ -67,7 +68,7 @@ public class UILinkManager : ILoadable
         partyPage.PageOnRight = GamepadPageID.Ammo;
         
         //Add tooltips for special inventory interactions (e.g. switch page)
-        partyPage.OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]);
+        partyPage.OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[56].Value, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]);
         //TODO: actually add these interactions
         
         //add party slots
@@ -82,12 +83,12 @@ public class UILinkManager : ILoadable
         
         //add other inventory buttons (collapse button and pokedex button)
         partyPage.LinkMap.Add(TerramonPointID.PartyCollapse, new UILinkPoint(TerramonPointID.PartyCollapse, enabled: true, TerramonPointID.HubUI, -1, -1, -1));
-        partyPage.LinkMap[TerramonPointID.PartyCollapse].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[53].Value, false,
+        partyPage.LinkMap[TerramonPointID.PartyCollapse].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[53].Value,
             PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]); //select
         
         partyPage.LinkMap.Add(TerramonPointID.HubUI, new UILinkPoint(TerramonPointID.HubUI, enabled: true,
             -1, reducedMotion ? TerramonPointID.Party0 : TerramonPointID.PartyCollapse, -1, -1));
-        partyPage.LinkMap[TerramonPointID.HubUI].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[53].Value, false,
+        partyPage.LinkMap[TerramonPointID.HubUI].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[53].Value,
             PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]); //select
         
         //add update events for new link points (anything that needs changing during runtime)
@@ -114,10 +115,10 @@ public class UILinkManager : ILoadable
                 if (heldPokemon != null)
                 {
                     if (TerramonPlayer.LocalPlayer.Party[i] != null && heldPokemon != TerramonPlayer.LocalPlayer.Party[i])
-                        partyPage.LinkMap[9600 + i].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[66].Value, false,
+                        partyPage.LinkMap[9600 + i].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[66].Value,
                         PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]); //swap
                     else
-                        partyPage.LinkMap[9600 + i].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[65].Value, false,
+                        partyPage.LinkMap[9600 + i].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[65].Value,
                             PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]); //place
                 }
                 else if (TerramonPlayer.LocalPlayer.Party[i] != null)
@@ -125,13 +126,13 @@ public class UILinkManager : ILoadable
                     if (Main.mouseItem.ModItem is IPokemonDirectUse item)
                     {
                         if (item.AffectedByPokemonDirectUse(TerramonPlayer.LocalPlayer.Party[i]))
-                            partyPage.LinkMap[9600 + i].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[79].Value, false,
+                            partyPage.LinkMap[9600 + i].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[79].Value,
                                     PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]); //use
                         else
                             partyPage.LinkMap[9600 + i].OnSpecialInteracts += () => "";
                     }
                     else
-                        partyPage.LinkMap[9600 + i].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[54].Value, false,
+                        partyPage.LinkMap[9600 + i].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[54].Value,
                             PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]); //take
                 }
                 else
@@ -140,7 +141,7 @@ public class UILinkManager : ILoadable
 
             //left party end slot (might nav to journey button)
             partyPage.LinkMap[TerramonPointID.Party0].Left = 
-                !reducedMotion ? TerramonPointID.PartyCollapse : Main.GameModeInfo.IsJourneyMode ? GamepadPointID.CreativeMenuToggle : TerramonPointID.HubUI;
+                !reducedMotion ? TerramonPointID.PartyCollapse : Main.IsJourneyMode ? GamepadPointID.CreativeMenuToggle : TerramonPointID.HubUI;
 
             //collapse button position + navigation
             var collapseButtonOffset = compressedState || reducedMotion ? 6 : 0;
@@ -171,11 +172,11 @@ public class UILinkManager : ILoadable
             }
 
             //pokedex icon
-            var dexOffset = new Vector2(Main.GameModeInfo.IsJourneyMode && !hasAutoTrash ? 1 : 0, Main.GameModeInfo.IsJourneyMode && hasAutoTrash ? 1 : 0);
+            var dexOffset = new Vector2(Main.IsJourneyMode && !hasAutoTrash ? 1 : 0, Main.IsJourneyMode && hasAutoTrash ? 1 : 0);
             partyPage.LinkMap[TerramonPointID.HubUI].Position = (FirstSlotPos + dexOffset * 48) * Main.UIScale;
             
             partyPage.LinkMap[TerramonPointID.HubUI].Right = reducedMotion && !compressedState ? TerramonPointID.Party0 : TerramonPointID.PartyCollapse;
-            partyPage.LinkMap[TerramonPointID.HubUI].Up = hasAutoTrash && Main.GameModeInfo.IsJourneyMode ? GamepadPointID.CreativeMenuToggle : 40;
+            partyPage.LinkMap[TerramonPointID.HubUI].Up = hasAutoTrash && Main.IsJourneyMode ? GamepadPointID.CreativeMenuToggle : 40;
         };
         
         UILinkPointNavigator.RegisterPage(partyPage, TerramonPageID.Party);
@@ -191,7 +192,7 @@ public class UILinkManager : ILoadable
         pcPage.PageOnRight = TerramonPageID.Party;
         
         //Add tooltips for special inventory interactions (e.g. switch page)
-        pcPage.OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]);
+        pcPage.OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[56].Value, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]);
         
         //add pc slots
         for (int x = 0; x <= 5; x++) {
@@ -214,22 +215,22 @@ public class UILinkManager : ILoadable
         
         pcPage.LinkMap.Add(TerramonPointID.PCLeft, new UILinkPoint(TerramonPointID.PCLeft, true,
             TerramonPointID.PC5, TerramonPointID.PCRight, -1, TerramonPointID.PCColor));
-        pcPage.LinkMap[TerramonPointID.PCLeft].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[53].Value, false,
+        pcPage.LinkMap[TerramonPointID.PCLeft].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[53].Value,
             PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]);
         
         pcPage.LinkMap.Add(TerramonPointID.PCRight, new UILinkPoint(TerramonPointID.PCRight, true,
             TerramonPointID.PCLeft,-1, -1, TerramonPointID.PCColor));
-        pcPage.LinkMap[TerramonPointID.PCRight].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[53].Value, false,
+        pcPage.LinkMap[TerramonPointID.PCRight].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[53].Value,
             PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]);
         
         pcPage.LinkMap.Add(TerramonPointID.PCColor, new UILinkPoint(TerramonPointID.PCColor, true,
             TerramonPointID.PC11,-1, TerramonPointID.PCLeft, TerramonPointID.PCRename));
-        pcPage.LinkMap[TerramonPointID.PCColor].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[53].Value, false,
+        pcPage.LinkMap[TerramonPointID.PCColor].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[53].Value,
             PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]);
         
         pcPage.LinkMap.Add(TerramonPointID.PCRename, new UILinkPoint(TerramonPointID.PCRename, true,
             TerramonPointID.PC17,-1, TerramonPointID.PCColor, TerramonPointID.PCColorH));
-        pcPage.LinkMap[TerramonPointID.PCRename].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[53].Value, false,
+        pcPage.LinkMap[TerramonPointID.PCRename].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[53].Value,
             PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]);
         
         //TODO: add clipboard/random/etc uilinkpoints
@@ -264,14 +265,14 @@ public class UILinkManager : ILoadable
                     if (heldPokemon != null)
                     {
                         if (slotContainsPokemon) //TODO: make this work for pretendToBeEmpty
-                            pcPage.LinkMap[pointID].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[66].Value, false,
+                            pcPage.LinkMap[pointID].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[66].Value,
                                 PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]); //swap
                         else
-                            pcPage.LinkMap[pointID].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[65].Value, false,
+                            pcPage.LinkMap[pointID].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[65].Value,
                                 PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]); //place
                     }
                     else if (slotContainsPokemon)
-                        pcPage.LinkMap[pointID].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[54].Value, false,
+                        pcPage.LinkMap[pointID].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[54].Value,
                             PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]); //take
                     else
                         pcPage.LinkMap[pointID].OnSpecialInteracts += () => "";
@@ -314,7 +315,7 @@ public class UILinkManager : ILoadable
         //Add new page to control HubUI items
         var hubPage = new UILinkPage();
         
-        hubPage.OnSpecialInteracts  += () => PlayerInput.BuildCommand(Lang.misc[53].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]); //select
+        hubPage.OnSpecialInteracts  += () => PlayerInput.BuildCommand(Lang.misc[53].Value, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]); //select
 
         hubPage.LinkMap.Add(TerramonPointID.HubTab0, new UILinkPoint(TerramonPointID.HubTab0, true, -1, TerramonPointID.HubTab1, -1, TerramonPointID.PokedexMin));
         hubPage.LinkMap.Add(TerramonPointID.HubTab1, new UILinkPoint(TerramonPointID.HubTab1, true, TerramonPointID.HubTab0, TerramonPointID.HubTab2, -1, -1));
@@ -330,8 +331,8 @@ public class UILinkManager : ILoadable
         pokedexPage.PageOnRight = TerramonPageID.HackySwitchPageRight;
         
         //i'm setting this for the whole page since it'll apply to every button
-        pokedexPage.OnSpecialInteracts  += () => PlayerInput.BuildCommand(Language.GetTextValue("Mods.Terramon.GUI.ControllerHints.SwitchPage"), false, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"])
-                                                 + PlayerInput.BuildCommand(Lang.misc[53].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]); //select
+        pokedexPage.OnSpecialInteracts  += () => PlayerInput.BuildCommand(Language.GetTextValue("Mods.Terramon.GUI.ControllerHints.SwitchPage"), PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"])
+                                                 + PlayerInput.BuildCommand(Lang.misc[53].Value, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]); //select
 
         for (int i = TerramonPointID.PokedexMin; i <= TerramonPointID.PokedexMax; i++)
             pokedexPage.LinkMap.Add(i, new UILinkPoint(i, true, i - 1, i + 1, i - 6, i + 6));
@@ -389,7 +390,7 @@ public class UILinkManager : ILoadable
                 : TerramonPointID.Party5;
 
             //set nav input for Pokédex icon
-            if (Main.GameModeInfo.IsJourneyMode)
+            if (Main.IsJourneyMode)
             {
                 if (hasAutoTrash)
                 {
@@ -416,7 +417,7 @@ public class UILinkManager : ILoadable
             }
             
             //Set emote button to loop back around to Pokédex button (would otherwise go to trash)
-            if (Main.GameModeInfo.IsJourneyMode)
+            if (Main.IsJourneyMode)
                 UILinkPointNavigator.Pages[GamepadPageID.Inventory].LinkMap[GamepadPointID.EmoteMenu].Right =
                     GamepadPointID.CreativeMenuToggle;
             else
@@ -427,10 +428,10 @@ public class UILinkManager : ILoadable
         //modify trash slot hint if a Pokémon is held within the PC
         if (PCInterface.Active && TooltipOverlay.GetHeldPokemon(out var source) != null)
             invPage.LinkMap[GamepadPointID.TrashItem].OnSpecialInteracts += () => PlayerInput.BuildCommand(
-                Language.GetTextValue("Mods.Terramon.GUI.ControllerHints.Release"), false,
+                Language.GetTextValue("Mods.Terramon.GUI.ControllerHints.Release"),
                 PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]);
         else
-            invPage.LinkMap[GamepadPointID.TrashItem].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[74].Value, false,
+            invPage.LinkMap[GamepadPointID.TrashItem].OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[74].Value,
                 PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]);
     }
 }

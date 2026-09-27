@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using System.Runtime.CompilerServices;
 using MonoMod.Cil;
 using Terramon.Content.Items;
@@ -45,7 +46,8 @@ public class TreeDropsGlobalTile : GlobalTile
     /// </summary>
     public override void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)
     {
-        if (Main.netMode == NetmodeID.MultiplayerClient || WorldGen.noTileActions || WorldGen.gen ||
+        // check previously included WorldGen.noTileActions. unknown if 1.4.5 equivalent exists
+        if (Main.netMode == NetmodeID.MultiplayerClient || WorldGen.isGeneratingOrLoadingWorld ||
             type != TileID.Trees || fail || noItem)
             return;
 
@@ -57,9 +59,8 @@ public class TreeDropsGlobalTile : GlobalTile
         if (!shouldDrop) return;
 
         var randomApricorn = ApricornItems[WorldGen.genRand.Next(ApricornItems.Length)].Type;
-        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 32, 32,
-            randomApricorn,
-            randomApricorn == ModContent.ItemType<RedApricorn>() && WorldGen.genRand.NextBool(6, 10)
+        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j),
+            new Point(i, j).ToWorldCoordinates(16, 16), randomApricorn, randomApricorn == ModContent.ItemType<RedApricorn>() && WorldGen.genRand.NextBool(6, 10)
                 ? 2
                 : 1); // TODO: Red Apricorns should be more common until Apricorn Trees are implemented
     }
@@ -72,7 +73,7 @@ public class TreeDropsGlobalTile : GlobalTile
             var c = new ILCursor(il);
 
             // Try to find where massive if else chain ends to inject code
-            c.GotoNext(i => i.MatchLdcI4(12), i => i.MatchCallvirt(typeof(UnifiedRandom), "Next"),
+            c.GotoNext(i => i.MatchLdcI4(12), i => i.MatchCallvirt<UnifiedRandom>("Next"),
                 i => i.MatchBrtrue(out _), i => i.MatchLdloc3(), i => i.MatchLdcI4(12));
 
             // Move forwards a bit

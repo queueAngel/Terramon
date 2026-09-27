@@ -1,6 +1,8 @@
-﻿using Terramon.Content.Configs;
+﻿using Microsoft.Xna.Framework;
+using Terramon.Content.Configs;
 using Terramon.Content.NPCs;
 using Terramon.ID;
+using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -66,7 +68,7 @@ internal abstract class BasePkballProjectile : ModProjectile
         Projectile.penetrate = -1;
     }
 
-    public override bool PreDraw(ref Color lightColor)
+    public override bool PreDraw(Player player, ref Color lightColor)/* tModPorter Replace 'Main.player[Projectile.owner]' with 'player'. */
     {
         var texture = TextureAssets.Projectile[Type].Value;
 
